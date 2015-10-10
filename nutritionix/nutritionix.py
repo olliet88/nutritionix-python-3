@@ -1,7 +1,7 @@
 import logging
 import json
 import requests
-import urlparse
+import urllib.parse as urlparse
 
 API_VERSION = "v2"
 BASE_URL = "https://apibeta.nutritionix.com/%s/" % (API_VERSION)
@@ -73,7 +73,7 @@ class NutritionixClient:
         boxes. The term selected by the user in autocomplete will pass to
         the /search endpoint.
         """
-        
+
         # If first arg is String then use it as query
         params = {}
         if kwargs:
@@ -106,7 +106,7 @@ class NutritionixClient:
 
     def search(self, **kwargs):  # TODO: Add advance search filters
         """
-        Search for an entire food term like "mcdonalds big mac" or "celery." 
+        Search for an entire food term like "mcdonalds big mac" or "celery."
         """
 
         # Adds keyword args to the params dictionary
