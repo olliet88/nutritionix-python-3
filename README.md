@@ -73,5 +73,7 @@ nutritionix.autocomplete(q='greek y')
 
 #### Links
 For more information about the API and extra arguments for calls:
+
 https://trackapi.nutritionix.com/docs/
+
 https://docs.google.com/document/d/1_q-K-ObMTZvO0qUEAxROrN3bwMujwAN25sLHwJzliK0/
