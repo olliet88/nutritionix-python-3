@@ -1,12 +1,15 @@
-Official Nutritionix Python Client
+(Extension of) Official Nutritionix Python Client
 ==================================
-### Installation
-```shell
-pip install nutritionix-client==1.0.0.dev1
+
+This is python 3 compatible and will support the exercise APIs
+
 ```
 
+### Usage
+
+#### import inside your project
+
 ```py
-# import inside your project
 from nutritionix.nutritionix import NutritionixClient
 
 nutritionix = NutritionixClient(
@@ -14,9 +17,8 @@ nutritionix = NutritionixClient(
     api_key='YOUR_API_KEY',
     # debug=True, # defaults to False
 )
-```
 
-### Usage
+```
 
 ####  Standard Search
 ```py
