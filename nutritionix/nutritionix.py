@@ -4,7 +4,7 @@ import requests
 import urllib.parse as urlparse
 
 API_VERSION = "v2"
-BASE_URL = "https://apibeta.nutritionix.com/%s/" % (API_VERSION)
+BASE_URL = "https://trackapi.nutritionix.com/%s/" % (API_VERSION)
 
 
 class NutritionixClient:
@@ -60,63 +60,56 @@ class NutritionixClient:
         # Log response content
         logging.debug("Response Content: %s" % (r.text))
 
-        return r.json()
+        return r
 
 
     #--------------
     # API Methods #
     #--------------
 
-    def autocomplete(self, **kwargs):
+    def search(self, q, **kwargs):  # TODO: Add advance search filters
+        """
+        Use this method to access the search/instant endpoint
+
+        Extra parameters can be added in the following way:
+        nutrtitionix.search(query, limit=6, ...)
+
+        Search for an entire food term like "mcdonalds big mac" or "celery."
+        """
+
+        params = {}
+        params['query'] = q
+
+        # Adding any extra parameters (using a dictionary merge trick)
+        if kwargs:
+            params = {**params, **kwargs}
+
+        endpoint = urlparse.urljoin(BASE_URL, 'search/instant')
+        return self.execute(endpoint, params=params)
+
+    def autocomplete_food(self, q, **kwargs):
         """
         Specifically designed to provide autocomplete functionality for search
         boxes. The term selected by the user in autocomplete will pass to
         the /search endpoint.
+
+        NB: From what I've seen this uses the same endpoint (/search/instant)
+            but if this isn't the case, raise an issue on the repo
         """
 
-        # If first arg is String then use it as query
-        params = {}
-        if kwargs:
-            params = kwargs
+        return self.search(q)
 
-        endpoint = urlparse.urljoin(BASE_URL, 'autocomplete')
 
-        return self.execute(endpoint, params=params)
-
-    def natural(self, **kwargs):
+    def natural_nutrients(self, q, **kwargs):
         """
         Supports natural language queries like "1 cup butter" or "100cal yogurt"
         """
 
-        # If first arg is String then use it as query
-        params = {}
-        if kwargs:
-            params = kwargs
+        data = {'query': q}
 
-        # Converts 'q' argument as request data
-        data = ''
-        if params.get('q'):
-            data = params.get('q')
-            # Removes 'q' argument from params to avoid pass it as URL argument
-            del params['q']
+        endpoint = urlparse.urljoin(BASE_URL, 'natural/nutrients')
 
-        endpoint = urlparse.urljoin(BASE_URL, 'natural')
-
-        return self.execute(endpoint, method="POST", params=params, data=data, headers={'Content-Type': 'text/plain'})
-
-    def search(self, **kwargs):  # TODO: Add advance search filters
-        """
-        Search for an entire food term like "mcdonalds big mac" or "celery."
-        """
-
-        # Adds keyword args to the params dictionary
-        params = {}
-        if kwargs:
-            params = kwargs
-
-        endpoint = urlparse.urljoin(BASE_URL, 'search')
-
-        return self.execute(endpoint, params=params)
+        return self.execute(endpoint, method="POST", params=kwargs, data=json.dumps(data), headers={'Content-Type': 'application/json'})
 
     def item(self, **kwargs):
         """Look up a specific item by ID or UPC"""
