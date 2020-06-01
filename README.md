@@ -8,7 +8,7 @@ pip install nutritionix-client==1.0.0.dev1
 ```py
 # import inside your project
 from nutritionix.nutritionix import NutritionixClient
- 
+
 nutritionix = NutritionixClient(
     application_id='YOUR_APP_ID',
     api_key='YOUR_API_KEY',
@@ -70,3 +70,8 @@ nutritionix.natural(q=ingredients, gram_weight=20)
 #allow users the convenience of "as you type" suggestions.
 nutritionix.autocomplete(q='greek y')
 ```
+
+#### Links
+For more information about the API and extra arguments for calls:
+https://trackapi.nutritionix.com/docs/
+https://docs.google.com/document/d/1_q-K-ObMTZvO0qUEAxROrN3bwMujwAN25sLHwJzliK0/

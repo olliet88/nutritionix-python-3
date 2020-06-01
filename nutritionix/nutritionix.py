@@ -3,6 +3,12 @@ import json
 import requests
 import urllib.parse as urlparse
 
+"""
+
+    Python 3 wrapper for the v2 nutritionix API
+
+"""
+
 API_VERSION = "v2"
 BASE_URL = "https://trackapi.nutritionix.com/%s/" % (API_VERSION)
 
@@ -28,8 +34,8 @@ class NutritionixClient:
         return self.API_KEY
 
     def execute(self, url=None, method='GET', params={}, data={}, headers={}):
-        """ Bootstrap, execute and return request object,
-                default method: GET
+        """
+            Bootstrap, execute and return request object, default method: GET
         """
 
         # Verifies params
@@ -67,7 +73,7 @@ class NutritionixClient:
     # API Methods #
     #--------------
 
-    def search(self, q, **kwargs):  # TODO: Add advance search filters
+    def search(self, q, **kwargs):  # TODO: Support for the nutrient filters
         """
         Use this method to access the search/instant endpoint
 
@@ -111,7 +117,7 @@ class NutritionixClient:
 
         return self.execute(endpoint, method="POST", params=kwargs, data=json.dumps(data), headers={'Content-Type': 'application/json'})
 
-    def item(self, **kwargs):
+    def item(self, id, **kwargs):
         """Look up a specific item by ID or UPC"""
 
         # Adds keyword args to the params dictionary
@@ -119,30 +125,16 @@ class NutritionixClient:
         if kwargs:
             params = kwargs
 
-        endpoint = urlparse.urljoin(BASE_URL, 'item/%s' % (params.get('id')))
+        params['nix_item_id'] = id
 
-        return self.execute(endpoint)
-
-    def brand(self, **kwargs):
-        """Look up a specific brand by ID. """
-
-        # Adds keyword args to the params dictionary
-        params = {}
-        if kwargs:
-            params = kwargs
-
-        endpoint = urlparse.urljoin(BASE_URL, 'brand/%s' % (params.get('id')))
-
-        return self.execute(endpoint)
-
-    def brand_search(self, **kwargs):
-        """Look up a specific brand by ID. """
-
-        # Adds keyword args to the params dictionary
-        params = {}
-        if kwargs:
-            params = kwargs
-
-        endpoint = urlparse.urljoin(BASE_URL, 'search/brands/')
+        endpoint = urlparse.urljoin(BASE_URL, 'search/item')
 
         return self.execute(endpoint, params=params)
+
+        """
+
+            Brand searches appear to be legacy functionality at this point
+            However they are part of the v1_1 API so I can add that in the
+            future.
+
+        """
