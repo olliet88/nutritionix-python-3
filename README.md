@@ -3,8 +3,6 @@
 
 This is python 3 compatible and will support the exercise APIs
 
-```
-
 ### Usage
 
 #### import inside your project
