@@ -27,7 +27,7 @@ can contain all the perameters the API accepts in the `POST /v2/search` endpoint
 nutritionix.search(q='salad', limit=10, offset=0, search_nutrient='calories')
 ```
 
-#### Brand Search
+#### Brand Search - Yet to be implemented
 ```py
 """
 This will perform a search. The object passed into this function
