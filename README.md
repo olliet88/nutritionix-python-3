@@ -71,7 +71,7 @@ nutritionix.natural(q=ingredients, gram_weight=20)
 nutritionix.autocomplete(q='greek y')
 ```
 
-#### Links
+### Links
 For more information about the API and extra arguments for calls:
 
 https://trackapi.nutritionix.com/docs/
