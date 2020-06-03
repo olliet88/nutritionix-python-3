@@ -1,7 +1,10 @@
-(Extension of) Official Nutritionix Python Client
+Unofficial Nutritionix V2 Python Client (2020)
 ==================================
 
-This is python 3 compatible and will support the exercise APIs
+This is python 3 compatible and supports all of the non-enterprise endpoints:
+- Food
+- Exercise
+- Location
 
 ### Usage
 
@@ -18,31 +21,44 @@ nutritionix = NutritionixClient(
 
 ```
 
-####  Standard Search
+#### Quick note on parameters
+
+Each function accepts all the parameters accepted by their respective endpoints (detailed in the nutritionix docs at https://docs.google.com/document/d/1_q-K-ObMTZvO0qUEAxROrN3bwMujwAN25sLHwJzliK0/).
+
+The parameters can be given like so:
+```py
+nutritionix.search(q='QUERY', parameter1='...', parameter2='...', ...)
+```
+#### All of these methods return a dictionary object
+
+#### nutritionix.search(q, ...)
 ```py
 """
-This will perform a search. The object passed into this function
-can contain all the perameters the API accepts in the `POST /v2/search` endpoint
+This will perform a search of the nutritionix database.
+(v2/search/instant endpoint)
+e.g:
 """
-nutritionix.search(q='salad', limit=10, offset=0, search_nutrient='calories')
+
+nutritionix.search(q='salad')
+# or in the case of extra parameters:
+nutritionix.search(q='salad', common=False)
 ```
 
-#### Brand Search - Yet to be implemented
+#### nutritionix.autocomplete(q, ...)
 ```py
-"""
-This will perform a search. The object passed into this function
-can contain all the perameters the API accepts in the `GET /v2/search/brands` endpoint
+# Autocomplete facility for search interfaces - the same as search.
+# (v2/search/instant endpoint) e.g:
 
-type: (1:restaurant, 2:cpg, 3:usda/nutritionix) defaults to undefined
-"""
-nutritionix.brand_search(q='just salad', limit=10, offset=0, type=1)
+nutritionix.autocomplete(q='greek y')
 ```
 
-#### Natural
+#### nutritionix.natural_nutrients(q, ...)
+
 ```py
 """
-The natural endpoint allows you to translate plane text into a full spectrum analysis.
-gram_weight: An {Integer} that will be used as a multiplier when calculating `total.nutrients`
+Performs analysis on plain text list of ingredients
+(v2/natural/nutrients endpoint)
+e.g:
 """
 
 ingredients = """
@@ -50,13 +66,59 @@ ingredients = """
 16 fl oz water
 1/2 lemon
 """
-nutritionix.natural(q=ingredients, gram_weight=20)
+nutritionix.natural_nutrients(q=ingredients)
+# or in the case of extra parameters:
+nutritionix.natural_nutrients(q=ingredients, gram_weight=20)
 ```
 
-#### Autocomplete
+#### nutritionix.item(id, ...)
+
 ```py
-#allow users the convenience of "as you type" suggestions.
-nutritionix.autocomplete(q='greek y')
+"""
+Looks up a specific item by ID or UPC
+e.g:
+"""
+nutritionix.item(id="513fc9e73fe3ffd40300109f")
+
+```
+#### nutritionix.natural_exercise(q, ...)
+
+```py
+"""
+Performs analysis on plain text description of exercise
+"""
+nutnutritionix.natural_exercise(q='five mile run')
+# or in the case of extra arguments:
+nutritionix.natural_exercise(q='five mile run', gender='female')
+```
+
+#### nutritionix.locations_distance(coordinate, distance, ...)
+
+```py
+"""
+Finds locations within the distance specified of the longitude and latitude coordinate
+"""
+
+location = (38.89814, -77.029446)
+
+nutritionix.locations_distance(location, "10m")
+# or in the case of extra parameters:
+nutritionix.locations_distance(location, "10m", limit=1)
+```
+
+#### nutritionix.locations_bounding_box(north_east, south_west)
+
+```py
+"""
+Finds locations in a box bounded by north_east and south_west coords
+"""
+
+a = (38.89814, -77.029446)
+b = (40.91000, -77.331800)
+
+nutritionix.locations_bounding_box(a, b)
+# or in the case of extra parameters:
+nutritionix.locations_bounding_box(a, b, limit=1)
 ```
 
 ### Links
