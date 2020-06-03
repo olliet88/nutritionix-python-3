@@ -1,13 +1,18 @@
+"""
+
+    Python 3 wrapper for the v2 nutritionix API (June 2020)
+    Consult https://docs.google.com/document/d/1_q-K-ObMTZvO0qUEAxROrN3bwMujwAN25sLHwJzliK0/
+    for information on parameters for each endpoint
+
+    Built out from official python2 client:
+    https://github.com/nutritionix/library-python
+
+"""
+
 import logging
 import json
 import requests
 import urllib.parse as urlparse
-
-"""
-
-    Python 3 wrapper for the v2 nutritionix API
-
-"""
 
 API_VERSION = "v2"
 BASE_URL = "https://trackapi.nutritionix.com/%s/" % (API_VERSION)
@@ -38,15 +43,6 @@ class NutritionixClient:
             Bootstrap, execute and return request object, default method: GET
         """
 
-        # Verifies params
-        if params.get('limit') != None and params.get('offset') == None:
-            raise Exception('Missing offset',
-                            'limit and offset are required for paginiation.')
-
-        elif params.get('offset') != None and params.get('limit') == None:
-            raise Exception('Missing limit',
-                            'limit and offset are required for paginiation.')
-
         # Bootstraps the request
         method = method.lower()
 
@@ -70,7 +66,7 @@ class NutritionixClient:
 
 
     #--------------
-    # API Methods #
+    # API (Food) Methods #
     #--------------
 
     def search(self, q, **kwargs):  # TODO: Support for the nutrient filters
@@ -82,14 +78,11 @@ class NutritionixClient:
 
         Search for an entire food term like "mcdonalds big mac" or "celery."
         """
-
         params = {}
         params['query'] = q
-
         # Adding any extra parameters (using a dictionary merge trick)
         if kwargs:
             params = {**params, **kwargs}
-
         endpoint = urlparse.urljoin(BASE_URL, 'search/instant')
         return self.execute(endpoint, params=params)
 
@@ -102,33 +95,28 @@ class NutritionixClient:
         NB: From what I've seen this uses the same endpoint (/search/instant)
             but if this isn't the case, raise an issue on the repo
         """
-
         return self.search(q)
 
 
     def natural_nutrients(self, q, **kwargs):
         """
-        Supports natural language queries like "1 cup butter" or "100cal yogurt"
+        Natural language queries about quantities of ingredients e.g:
+        "1 tbsp butter"
         """
-
         data = {'query': q}
-
         endpoint = urlparse.urljoin(BASE_URL, 'natural/nutrients')
-
         return self.execute(endpoint, method="POST", params=kwargs, data=json.dumps(data), headers={'Content-Type': 'application/json'})
 
     def item(self, id, **kwargs):
-        """Look up a specific item by ID or UPC"""
-
+        """
+        Look up a specific item by ID or UPC
+        """
         # Adds keyword args to the params dictionary
         params = {}
         if kwargs:
             params = kwargs
-
         params['nix_item_id'] = id
-
         endpoint = urlparse.urljoin(BASE_URL, 'search/item')
-
         return self.execute(endpoint, params=params)
 
         """
@@ -137,4 +125,56 @@ class NutritionixClient:
             However they are part of the v1_1 API so I can add that in the
             future.
 
+            (TODO: add brand functionality)
+
         """
+
+    #--------------
+    # API (Exercise) Methods #
+    #--------------
+
+    def natural_exercise(self, q, **kwargs):
+        """
+        Natural language queries for exercise e.g:
+        "i went on a 3km run" / "3 min row"
+        """
+        data = {'query': q}
+        endpoint = urlparse.urljoin(BASE_URL, 'natural/exercise')
+        return self.execute(endpoint, method="POST", params=kwargs, data=json.dumps(data), headers={'Content-Type': 'application/json'})
+
+
+    #--------------
+    # API (Location) Methods #
+    #--------------
+
+    def locations_distance(self, coordinate, distance, **kwargs):
+        """
+        Finds locations within "distance" of your location
+        Expects lat/long coordinate as a tuple.
+        """
+
+        if len(coordinate) != 2 :
+            print("Incorrect tuple length: expected lat/long tuples for coordinate arg")
+
+        params = kwargs
+        params['ll'] = "" + str(coordinate[0]) + "," + str(coordinate[1])
+        params['distance'] = distance
+
+        endpoint = urlparse.urljoin(BASE_URL, 'locations')
+        return self.execute(endpoint, params=params)
+
+    def locations_bounding_box(self, north_east, south_west, **kwargs):
+        """
+        Finds locations within a bounding box defined by two coordinates
+        This expects two tuples representing the lat/long coordinates.
+        """
+
+        if len(north_east) != 2 or len(south_west) != 2 :
+            print("Incorrect tuple length: expected lat/long tuples for north east and south west coordinates")
+
+        params = kwargs
+        params['north_east'] = "" + str(north_east[0]) + "," + str(north_east[1])
+        params['south_west'] = "" + str(south_west[0]) + "," + str(south_west[1])
+
+        endpoint = urlparse.urljoin(BASE_URL, 'locations')
+        return self.execute(endpoint, params=params)
