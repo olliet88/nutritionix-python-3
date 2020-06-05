@@ -1,7 +1,9 @@
 Nutritionix Python Client - Unofficial Update (2020)
 ==================================
 
-This is python 3 compatible and supports a lot more endpionts:
+![alt text](attributions/NutritionixAPI_hires_flat.png)
+
+This fork is python 3 compatible and supports a lot more endpoints:
 - Food
 - Exercise
 - Location
