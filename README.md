@@ -39,14 +39,14 @@ This will perform a search of the nutritionix database.
 e.g:
 """
 
-Endpoint docs:
-
-https://trackapi.nutritionix.com/docs/#/default/get_v2_search_instant
-
 nutritionix.search(q='salad')
 # or in the case of extra parameters:
 nutritionix.search(q='salad', common=False)
 ```
+
+Endpoint docs:
+
+https://trackapi.nutritionix.com/docs/#/default/get_v2_search_instant
 
 #### nutritionix.autocomplete(q, ...)
 ```py
