@@ -1,7 +1,7 @@
-Unofficial Nutritionix V2 Python Client (2020)
+Nutritionix Python Client - Unofficial Update (2020)
 ==================================
 
-This is python 3 compatible and supports all of the non-enterprise endpoints:
+This is python 3 compatible and supports a lot more endpionts:
 - Food
 - Exercise
 - Location
