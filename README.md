@@ -8,6 +8,14 @@ This fork is python 3 compatible and supports a lot more endpoints:
 - Exercise
 - Location
 
+### Installation:
+
+You'll need python3 and pip installed.
+
+```
+pip install nutritionix-unofficial
+```
+
 ### Usage
 
 #### import inside your project
