@@ -39,6 +39,10 @@ This will perform a search of the nutritionix database.
 e.g:
 """
 
+Endpoint docs:
+
+https://trackapi.nutritionix.com/docs/#/default/get_v2_search_instant
+
 nutritionix.search(q='salad')
 # or in the case of extra parameters:
 nutritionix.search(q='salad', common=False)
@@ -51,6 +55,8 @@ nutritionix.search(q='salad', common=False)
 
 nutritionix.autocomplete(q='greek y')
 ```
+
+(Same endpoint as above)
 
 #### nutritionix.natural_nutrients(q, ...)
 
@@ -71,6 +77,10 @@ nutritionix.natural_nutrients(q=ingredients)
 nutritionix.natural_nutrients(q=ingredients, gram_weight=20)
 ```
 
+Endpoint docs:
+
+https://trackapi.nutritionix.com/docs/#/default/post_v2_natural_nutrients
+
 #### nutritionix.item(id, ...)
 
 ```py
@@ -81,6 +91,11 @@ e.g:
 nutritionix.item(id="513fc9e73fe3ffd40300109f")
 
 ```
+
+Endpoint docs:
+
+https://trackapi.nutritionix.com/docs/#/default/get_v2_search_item
+
 #### nutritionix.natural_exercise(q, ...)
 
 ```py
@@ -91,6 +106,10 @@ nutnutritionix.natural_exercise(q='five mile run')
 # or in the case of extra arguments:
 nutritionix.natural_exercise(q='five mile run', gender='female')
 ```
+
+Endpoint docs:
+
+https://trackapi.nutritionix.com/docs/#/default/post_v2_natural_exercise
 
 #### nutritionix.locations_distance(coordinate, distance, ...)
 
@@ -106,6 +125,10 @@ nutritionix.locations_distance(location, "10m")
 nutritionix.locations_distance(location, "10m", limit=1)
 ```
 
+Endpoint docs:
+
+https://trackapi.nutritionix.com/docs/#/Locations/get_v2_locations
+
 #### nutritionix.locations_bounding_box(north_east, south_west)
 
 ```py
@@ -120,6 +143,8 @@ nutritionix.locations_bounding_box(a, b)
 # or in the case of extra parameters:
 nutritionix.locations_bounding_box(a, b, limit=1)
 ```
+
+(Same endpoint as above)
 
 ### Links
 For more information about the API and extra arguments for calls:
